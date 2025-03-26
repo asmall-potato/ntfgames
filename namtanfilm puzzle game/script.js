@@ -33,8 +33,11 @@ function initPuzzle() {
     let img = new Image();
     img.src = levelImages[currentLevel];
     img.onload = () => {
-        originalImage.src = img.src; // Set image after it loads
+        originalImage.src = img.src; // Ensure image is set only after loading
         pieces = [];
+
+        let pieceSize = window.innerWidth <= 600 ? 75 : 100; // Dynamically adjust piece size
+        let bgSize = pieceSize * gridSize; // Ensure full image scales correctly
 
         for (let row = 0; row < gridSize; row++) {
             for (let col = 0; col < gridSize; col++) {
@@ -42,7 +45,7 @@ function initPuzzle() {
                 piece.classList.add('puzzle-piece');
                 piece.style.backgroundImage = `url(${originalImage.src})`;
                 piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
-                piece.style.backgroundSize = `${gridSize * pieceSize}px ${gridSize * pieceSize}px`; // Ensure full image fits
+                piece.style.backgroundSize = `${bgSize}px ${bgSize}px`; // Adjust background size dynamically
 
                 piece.dataset.correctRow = row;
                 piece.dataset.correctCol = col;
@@ -69,6 +72,7 @@ function initPuzzle() {
         updateCorrectness();
     };
 }
+
 
 
 // Shuffle the puzzle pieces
