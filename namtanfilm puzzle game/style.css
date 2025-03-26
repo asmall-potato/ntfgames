@@ -62,14 +62,14 @@ h1 {
 
     .puzzle-container {
         grid-template-columns: repeat(4, 75px);
-        grid-template-rows: repeat(4, 75px); /* Ensure correct grid layout */
+        grid-template-rows: repeat(4, 75px);
         grid-gap: 3px;
     }
 
     .puzzle-piece {
         width: 75px;
         height: 75px;
-        background-size: 300px 300px; /* Ensure background scales properly */
+        background-size: 300px 300px; /* Ensure entire image scales properly */
         background-repeat: no-repeat;
     }
 
