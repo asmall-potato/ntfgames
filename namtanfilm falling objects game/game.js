@@ -85,25 +85,30 @@ function startGameWithPrompt(selectedLevel) {
 
 // Touch Controls for Mobile
 let touchStartX = 0;
+let touchEndX = 0;
+
 gameArea.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
 }, { passive: true });
 
 gameArea.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const touchEndX = e.touches[0].clientX;
-    const threshold = 30;
-    
-    if (touchEndX < touchStartX - threshold && playerX > 0) {
-        playerX -= 20;
-    } 
-    else if (touchEndX > touchStartX + threshold && playerX < gameArea.offsetWidth - player.offsetWidth) {
-        playerX += 20;
+    touchEndX = e.touches[0].clientX;
+    let deltaX = touchEndX - touchStartX;  // Calculate movement distance
+
+    if (Math.abs(deltaX) > 10) { // Adjust threshold for responsiveness
+        playerX += deltaX; 
+
+        // Keep player within gameArea bounds
+        if (playerX < 0) playerX = 0;
+        if (playerX > gameArea.offsetWidth - player.offsetWidth) {
+            playerX = gameArea.offsetWidth - player.offsetWidth;
+        }
+
+        player.style.left = playerX + 'px';
+        touchStartX = touchEndX; // Update start position for smoother dragging
     }
-    
-    player.style.left = playerX + 'px';
-    touchStartX = touchEndX;
 }, { passive: false });
+
 
 // Create Falling Objects
 // Create Falling Objects
