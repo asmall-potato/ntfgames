@@ -242,19 +242,17 @@ function gameLoop() {
 
 // Collision Detection
 function checkCollision(object) {
-    const objectTop = parseInt(object.style.top);
-    const objectLeft = parseInt(object.style.left);
-    const objectWidth = parseInt(object.style.width);
-    const objectHeight = parseInt(object.style.height);
-    
-    const playerTop = gameArea.offsetHeight - player.offsetHeight - 20;
-    const playerLeft = playerX;
-    const playerWidth = player.offsetWidth;
-    
-    return objectTop + objectHeight >= playerTop &&
-           objectLeft + objectWidth >= playerLeft &&
-           objectLeft <= playerLeft + playerWidth;
+    const objectRect = object.getBoundingClientRect();
+    const playerRect = player.getBoundingClientRect();
+
+    return (
+        objectRect.bottom >= playerRect.top &&  // Object reaches player height
+        objectRect.top <= playerRect.bottom &&  // Prevent overlap issues
+        objectRect.right >= playerRect.left &&  // Right side of object touches left side of player
+        objectRect.left <= playerRect.right     // Left side of object touches right side of player
+    );
 }
+
 
 // Object Collection
 function collectObject(object) {
