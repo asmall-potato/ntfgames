@@ -66,24 +66,65 @@ function shufflePieces() {
 }
 
 // Drag and drop functionality
-let draggedPiece;
+// Replace all drag/drop event listeners with these:
 
-function dragStart(e) {
-    draggedPiece = this;
-    setTimeout(() => (this.style.opacity = '0.5'), 0);
+function addTouchEvents(piece) {
+    piece.addEventListener('touchstart', touchStart, { passive: false });
+    piece.addEventListener('touchmove', touchMove, { passive: false });
+    piece.addEventListener('touchend', touchEnd);
 }
 
-function dragOver(e) {
+let touchStartX, touchStartY;
+let touchedPiece;
+
+function touchStart(e) {
     e.preventDefault();
+    touchedPiece = this;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    this.style.transition = 'none';
+    this.style.zIndex = '10';
 }
 
-function drop(e) {
+function touchMove(e) {
+    if (!touchedPiece) return;
     e.preventDefault();
-    if (this !== draggedPiece) {
-        swapPieceData(this, draggedPiece);
+    
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+    
+    touchedPiece.style.transform = `translate(${touchX - touchStartX}px, ${touchY - touchStartY}px)`;
+}
+
+function touchEnd() {
+    if (!touchedPiece) return;
+    
+    // Find which piece we're hovering over
+    const dropTarget = document.elementFromPoint(
+        touchStartX + parseInt(touchedPiece.style.transform?.split(',')[0]?.replace('translate(', '') || 0),
+        touchStartY + parseInt(touchedPiece.style.transform?.split(',')[1] || 0)
+    );
+    
+    if (dropTarget?.classList?.contains('puzzle-piece') && dropTarget !== touchedPiece) {
+        swapPieceData(touchedPiece, dropTarget);
         updateCorrectness();
     }
-    this.style.opacity = '1';
+    
+    // Reset styles
+    touchedPiece.style.transform = '';
+    touchedPiece.style.transition = '';
+    touchedPiece.style.zIndex = '';
+    touchedPiece = null;
+}
+
+// Update your initPuzzle function to use touch events:
+function initPuzzle() {
+    // ... existing code ...
+    pieces.forEach(piece => {
+        addTouchEvents(piece); // Add touch events
+        puzzleContainer.appendChild(piece);
+    });
+    // ... existing code ...
 }
 
 // Swap dataset position and visual background
