@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Falling Objects Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h3><center>Lunar X Orange Head Falling Objects Game</center></h3>
+    
+</br>
+    <div id="scoreTimeContainer">
+        <div id="score">Score: 0</div>
+        <div id="timer">Time: 30</div>
+    </div>
+    <div id="gameContainer">
+        <a href="../index.html">HomePage</a>
+    <div id="gameArea">
+        <div id="player"></div>
+        <div class="fallingObject" id="fallingObjectA"></div>
+        <div class="fallingObject" id="fallingObjectB"></div>
+        <div class="fallingObject" id="fallingObjectC"></div>
+        <div class="fallingObject" id="fallingObjectD"></div>
+    </div>
+</br>
+    <!-- Difficulty Selection Buttons -->
+    <div id="difficultyButtons">
+        <button onclick="startGame('easy')">Easy</button>
+        <button onclick="startGame('normal')">Normal</button>
+        <button onclick="startGame('hard')">Hard</button>
+    </div>
+
+    <!-- Restart Button -->
+    <div id="restartButton" style="display: none;">
+        <button onclick="restartGame()">Restart</button>
+    </div>
+</div>
+</br>
+
+    <script src="game.js"></script>
+</body>
+</html>

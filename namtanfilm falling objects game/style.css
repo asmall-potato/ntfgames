@@ -1,0 +1,253 @@
+/* Mobile-first approach - FULL SCREEN FIX (with improved button presentation) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    touch-action: manipulation;
+    font-family: Arial, sans-serif;
+}
+
+/* Add this new rule for the h3 title */
+h3 {
+    text-align: center;
+    margin: 10px 0;
+    padding: 10px;
+    color: #333; /* Or any color you prefer */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
+    z-index: 99; /* Just below the score container */
+}
+
+/* General styles for the link */
+a {
+    color: #4CAF50; /* Green color for the link */
+    font-size: 16px; /* Font size */
+    text-decoration: none; /* Remove underline */
+    padding: 10px 20px;
+    border-radius: 25px;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background to match other UI elements */
+    margin: 10px;
+    display: inline-block; /* Make it behave like a block element for spacing */
+    text-align: center;
+}
+
+
+/* Then modify your existing #scoreTimeContainer */
+#scoreTimeContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    position: fixed;
+    top: 60px; /* Changed from 0 to 60px to make space for h3 */
+    left: 0;
+    z-index: 100;
+    height: 50px;
+}
+
+/* And adjust the game container position */
+#gameContainer {
+    position: fixed;
+    top: 110px; /* 60px (h3) + 50px (score container) */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 180px); /* Adjusted for h3 and buttons */
+    display: flex;
+    flex-direction: column;
+}
+
+#gameArea {
+    width: 100%;
+    height: 100%;
+    background-color: lightblue;
+    position: relative;
+    overflow: hidden;
+}
+
+#player {
+    width: 15vw;
+    height: 15vw;
+    min-width: 40px;
+    min-height: 40px;
+    background-color: red;
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.fallingObject {
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 5;
+    width: 10vw;
+    height: 10vw;
+    min-width: 30px;
+    min-height: 30px;
+}
+
+/* Buttons container - ORIGINAL STYLING PRESERVED */
+#buttonsContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#difficultyButtons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+#restartButton {
+    display: none;
+    justify-content: center;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 25px;
+    background-color: #4CAF50;
+    color: white;
+    min-width: 100px;
+}
+
+/* Game Prompt Message Box */
+#gamePrompt {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 200;
+    text-align: center;
+    max-width: 80%;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    display: none;
+}
+
+#gamePrompt h3 {
+    margin-top: 0;
+    color: #4CAF50;
+}
+
+#gamePrompt p {
+    margin: 10px 0;
+}
+
+/* Desktop-specific styles */
+@media (min-width: 769px) {
+    /* Adjust the h3 title for desktop */
+    /* Adjust the h3 title for desktop */
+    h3 {
+        position: static;
+        background-color: transparent;
+        padding: 20px 0 10px 0; /* More padding at top */
+        margin: 0;
+        color: #333;
+        font-size: 1.8rem; /* Slightly larger font */
+    }
+
+    /* Center the game container and title */
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px; /* Added body padding */
+    }
+
+    #scoreTimeContainer {
+        width: 600px; /* Keeping width fixed */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    position: fixed;
+    top: 80px; /* Adjusted from 60px to 80px */
+    left: 50%; /* This will set the left position to 50% of the viewport */
+    transform: translateX(-50%); /* This will move the container back by 50% of its own width to center it */
+    z-index: 100;
+    height: 50px;
+    }
+
+    #gameContainer {
+        position: relative;
+        width: 600px;
+        height: 500px;
+        margin: 30px auto 0; /* Increased top margin */
+        top: auto;
+        left: auto;
+    }
+
+    /* Rest of your existing desktop styles remain the same... */
+    #gameArea {
+        width: 600px;
+        height: 400px;
+    }
+
+    #buttonsContainer {
+        position: absolute;
+        width: 600px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: transparent;
+        bottom: -90px;
+        padding: 0;
+    }
+
+    /* Rest of your existing desktop styles... */
+    #difficultyButtons {
+        position: static;
+        justify-content: center;
+    }
+
+    #restartButton {
+        position: static;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    #player {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+    }
+
+    .fallingObject {
+        width: 30px;
+        height: 30px;
+    }
+
+    /* Desktop prompt styling */
+    #gamePrompt {
+        max-width: 50%;
+    }
+}
