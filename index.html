@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUNAR Game Zone</title>
+    <style>
+        /* Ensure the body takes full height and has no margin */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Allow space for content and footer */
+            align-items: center;
+            height: 100vh; /* Full viewport height */
+            margin: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .game-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            flex-grow: 1; /* Allow the content to take available space */
+            align-items: center; /* Center the items vertically */
+        }
+
+        .game-card {
+            width: 250px;
+            height: 150px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .game-card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #333;
+            color: white;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Add this new media query at the end of your existing CSS */
+/* This will ONLY affect screens smaller than 768px (typical mobile devices) */
+/* ===== MOBILE REDESIGN (ONLY affects screens <769px) ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin: 20px 15px 10px;
+        color: #2c3e50;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #4CAF50;
+    }
+
+    p {
+        font-size: 1rem;
+        margin: 0 15px 25px;
+        color: #7f8c8d;
+    }
+
+    .game-container {
+        flex-direction: column;
+        gap: 20px; /* Increased gap */
+        padding: 0 15px 100px;
+        width: 100%;
+    }
+
+    .game-card {
+        width: 100%;
+        height: 140px; /* Taller for better touch */
+        display: flex;
+        align-items: center;
+        justify-content: center; /* Center text */
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Deeper shadow */
+        transition: all 0.2s ease;
+        border-left: 6px solid; /* Thicker accent */
+    }
+
+    .game-card a {
+        font-size: 1.5rem; /* Larger text */
+        font-weight: 600;
+        color: #2c3e50; /* Darker text */
+        text-align: center;
+        padding: 20px; /* More tap area */
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Color accents */
+    .game-card:nth-child(1) { border-left-color: #ff6b6b; background-color: #fff5f5; }
+    .game-card:nth-child(2) { border-left-color: #48dbfb; background-color: #f0f9ff; }
+    .game-card:nth-child(3) { border-left-color: #1dd1a1; background-color: #f0fff7; }
+
+    .game-card:active {
+        transform: scale(0.98);
+        background-color: #f8f9fa; /* Tap feedback */
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #2c3e50;
+        color: white;
+        padding: 15px 0;
+        text-align: center;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    footer a {
+        color: #4CAF50;
+        font-weight: bold;
+    }
+
+    /* Touch-friendly links */
+    a {
+        padding: 10px;
+        display: block;
+    }
+}
+    </style>
+</head>
+<body>
+    <h1>Welcome to LUNAR Game Zone</h1>
+    <p>A special game set for NamtanFilm, Lunars, Mochi & Fuji Film</p>
+    
+    <div class="game-container">
+        <div class="game-card" style="background-color: #ffcccb;">
+            <a href="namtanfilm flip games/ntfmemorygame.html">Memory Game</a>
+        </div>
+        <div class="game-card" style="background-color: #add8e6;">
+            <a href="namtanfilm puzzle game/puzzle.html">Puzzle Game</a>
+        </div>
+        <div class="game-card" style="background-color: #adf6d7;">
+            <a href="namtanfilm falling objects game/falling.html">Falling Object Game</a>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Lunar Game Zone. All rights reserved. | Develop & Design by @jieyan96</p>
+    </footer>
+</body>
+</html>
