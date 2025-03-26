@@ -60,13 +60,22 @@ h1 {
     }
 
     .puzzle-container {
-        grid-template-columns: repeat(4, 75px); /* Reduce piece size */
-        grid-gap: 3px;
+        touch-action: manipulation; /* Disables double-tap zoom */
+        width: 100vw;
+        height: 100vw; /* Square container */
+        max-width: 400px; /* Prevent becoming too large */
+        max-height: 400px;
     }
-
+    
     .puzzle-piece {
-        width: 75px;
-        height: 75px;
-        background-size: 300px 300px; /* Adjust to match new size */
+        width: 25% !important; /* 4x4 grid */
+        height: 25% !important;
+        background-size: 400% 400% !important; /* Scale background to grid */
+    }
+    
+    button {
+        padding: 15px 25px;
+        font-size: 1.2rem;
+        margin: 10px;
     }
 }
