@@ -245,11 +245,16 @@ function checkCollision(object) {
     const objectRect = object.getBoundingClientRect();
     const playerRect = player.getBoundingClientRect();
 
+    // Expand player's hitbox slightly for better detection
+    const hitboxOffset = playerRect.width * 0.2; // 20% wider
+    const adjustedPlayerLeft = playerRect.left - hitboxOffset;
+    const adjustedPlayerRight = playerRect.right + hitboxOffset;
+
     return (
         objectRect.bottom >= playerRect.top &&  // Object reaches player height
         objectRect.top <= playerRect.bottom &&  // Prevent overlap issues
-        objectRect.right >= playerRect.left &&  // Right side of object touches left side of player
-        objectRect.left <= playerRect.right     // Left side of object touches right side of player
+        objectRect.right >= adjustedPlayerLeft &&  // Right side of object touches expanded left side of player
+        objectRect.left <= adjustedPlayerRight     // Left side of object touches expanded right side of player
     );
 }
 
