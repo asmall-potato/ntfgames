@@ -27,43 +27,49 @@ document.body.appendChild(restartButton);
 
 // Load the image and initialize the puzzle
 function initPuzzle() {
-    puzzleContainer.innerHTML = ''; // Clear container
-    originalImage.src = levelImages[currentLevel]; // Set current level image
-
-    pieces = [];
+    puzzleContainer.innerHTML = '';  
     correctPieces = 0;
 
-    for (let row = 0; row < gridSize; row++) {
-        for (let col = 0; col < gridSize; col++) {
-            const piece = document.createElement('div');
-            piece.classList.add('puzzle-piece');
-            piece.style.backgroundImage = `url(${originalImage.src})`;
-            piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+    let img = new Image();
+    img.src = levelImages[currentLevel];
+    img.onload = () => {
+        originalImage.src = img.src; // Set image after it loads
+        pieces = [];
 
-            piece.dataset.correctRow = row;
-            piece.dataset.correctCol = col;
-            piece.dataset.currentRow = row;
-            piece.dataset.currentCol = col;
+        for (let row = 0; row < gridSize; row++) {
+            for (let col = 0; col < gridSize; col++) {
+                const piece = document.createElement('div');
+                piece.classList.add('puzzle-piece');
+                piece.style.backgroundImage = `url(${originalImage.src})`;
+                piece.style.backgroundPosition = `-${col * pieceSize}px -${row * pieceSize}px`;
+                piece.style.backgroundSize = `${gridSize * pieceSize}px ${gridSize * pieceSize}px`; // Ensure full image fits
 
-            piece.draggable = true;
-            piece.addEventListener('dragstart', dragStart);
-            piece.addEventListener('dragover', dragOver);
-            piece.addEventListener('drop', drop);
-            piece.addEventListener('dragend', dragEnd);
+                piece.dataset.correctRow = row;
+                piece.dataset.correctCol = col;
+                piece.dataset.currentRow = row;
+                piece.dataset.currentCol = col;
 
-            // Mobile support (Touch events)
-            piece.addEventListener("touchstart", touchStart, { passive: false });
-            piece.addEventListener("touchmove", touchMove, { passive: false });
-            piece.addEventListener("touchend", touchEnd);
+                piece.draggable = true;
+                piece.addEventListener('dragstart', dragStart);
+                piece.addEventListener('dragover', dragOver);
+                piece.addEventListener('drop', drop);
+                piece.addEventListener('dragend', dragEnd);
 
-            pieces.push(piece);
+                // Mobile touch support
+                piece.addEventListener("touchstart", touchStart, { passive: false });
+                piece.addEventListener("touchmove", touchMove, { passive: false });
+                piece.addEventListener("touchend", touchEnd);
+
+                pieces.push(piece);
+            }
         }
-    }
 
-    shufflePieces();
-    pieces.forEach(piece => puzzleContainer.appendChild(piece));
-    updateCorrectness();
+        shufflePieces();
+        pieces.forEach(piece => puzzleContainer.appendChild(piece));
+        updateCorrectness();
+    };
 }
+
 
 // Shuffle the puzzle pieces
 function shufflePieces() {
