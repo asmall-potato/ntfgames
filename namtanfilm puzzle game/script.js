@@ -11,6 +11,7 @@ let currentLevel = 0;
 
 let pieces = [];
 let correctPieces = 0;
+let draggedPiece = null;
 
 // Create buttons
 const submitButton = document.createElement('button');
@@ -48,6 +49,13 @@ function initPuzzle() {
             piece.addEventListener('dragstart', dragStart);
             piece.addEventListener('dragover', dragOver);
             piece.addEventListener('drop', drop);
+            piece.addEventListener('dragend', dragEnd);
+
+            // Mobile support (Touch events)
+            piece.addEventListener("touchstart", touchStart, { passive: false });
+            piece.addEventListener("touchmove", touchMove, { passive: false });
+            piece.addEventListener("touchend", touchEnd);
+
             pieces.push(piece);
         }
     }
@@ -65,66 +73,77 @@ function shufflePieces() {
     }
 }
 
-// Drag and drop functionality
-// Replace all drag/drop event listeners with these:
-
-function addTouchEvents(piece) {
-    piece.addEventListener('touchstart', touchStart, { passive: false });
-    piece.addEventListener('touchmove', touchMove, { passive: false });
-    piece.addEventListener('touchend', touchEnd);
+// Desktop Drag and Drop functionality
+function dragStart(e) {
+    draggedPiece = this;
+    setTimeout(() => (this.style.opacity = '0.5'), 0);
 }
 
+function dragOver(e) {
+    e.preventDefault();
+}
+
+function drop(e) {
+    e.preventDefault();
+    if (this !== draggedPiece) {
+        swapPieceData(this, draggedPiece);
+        updateCorrectness();
+    }
+}
+
+function dragEnd() {
+    this.style.opacity = '1';
+}
+
+// Mobile Touch functionality
 let touchStartX, touchStartY;
-let touchedPiece;
 
 function touchStart(e) {
     e.preventDefault();
-    touchedPiece = this;
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    this.style.transition = 'none';
-    this.style.zIndex = '10';
+    draggedPiece = this;
+    let touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
 }
 
 function touchMove(e) {
-    if (!touchedPiece) return;
     e.preventDefault();
-    
-    const touchX = e.touches[0].clientX;
-    const touchY = e.touches[0].clientY;
-    
-    touchedPiece.style.transform = `translate(${touchX - touchStartX}px, ${touchY - touchStartY}px)`;
+    let touch = e.touches[0];
+    let deltaX = touch.clientX - touchStartX;
+    let deltaY = touch.clientY - touchStartY;
+
+    draggedPiece.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
 }
 
-function touchEnd() {
-    if (!touchedPiece) return;
-    
-    // Find which piece we're hovering over
-    const dropTarget = document.elementFromPoint(
-        touchStartX + parseInt(touchedPiece.style.transform?.split(',')[0]?.replace('translate(', '') || 0),
-        touchStartY + parseInt(touchedPiece.style.transform?.split(',')[1] || 0)
-    );
-    
-    if (dropTarget?.classList?.contains('puzzle-piece') && dropTarget !== touchedPiece) {
-        swapPieceData(touchedPiece, dropTarget);
+function touchEnd(e) {
+    e.preventDefault();
+    let touch = e.changedTouches[0];
+    let endX = touch.clientX;
+    let endY = touch.clientY;
+
+    // Determine which piece is closest
+    let closestPiece = null;
+    let minDistance = Infinity;
+
+    pieces.forEach(piece => {
+        let rect = piece.getBoundingClientRect();
+        let distance = Math.sqrt(
+            Math.pow(rect.left + rect.width / 2 - endX, 2) +
+            Math.pow(rect.top + rect.height / 2 - endY, 2)
+        );
+
+        if (distance < minDistance) {
+            minDistance = distance;
+            closestPiece = piece;
+        }
+    });
+
+    if (closestPiece && closestPiece !== draggedPiece) {
+        swapPieceData(closestPiece, draggedPiece);
         updateCorrectness();
     }
-    
-    // Reset styles
-    touchedPiece.style.transform = '';
-    touchedPiece.style.transition = '';
-    touchedPiece.style.zIndex = '';
-    touchedPiece = null;
-}
 
-// Update your initPuzzle function to use touch events:
-function initPuzzle() {
-    // ... existing code ...
-    pieces.forEach(piece => {
-        addTouchEvents(piece); // Add touch events
-        puzzleContainer.appendChild(piece);
-    });
-    // ... existing code ...
+    draggedPiece.style.transform = "translate(0, 0)";
 }
 
 // Swap dataset position and visual background
@@ -164,29 +183,29 @@ function updateCorrectness() {
     });
 
     if (correctPieces === pieces.length) {
-        setTimeout(nextLevel, 1000); // Move to next level after 1 sec
+        setTimeout(nextLevel, 1000);
     }
 }
 
 // Move to the next level
 function nextLevel() {
     if (currentLevel < levelImages.length - 1) {
-        currentLevel++; // Move to next level
+        currentLevel++;
         alert(`🎉 Level ${currentLevel} Complete! Moving to Level ${currentLevel + 1}...`);
-        initPuzzle(); // Load next puzzle
+        initPuzzle();
     } else {
         alert("🎉 You completed all levels! Well done! 🎉");
-        restartButton.style.display = "block"; // Show restart button
-        submitButton.style.display = "none"; // Hide submit button
+        restartButton.style.display = "block";
+        submitButton.style.display = "none";
     }
 }
 
 // Restart the game
 function restartGame() {
-    currentLevel = 0; // Reset to first level
-    restartButton.style.display = "none"; // Hide restart button
-    submitButton.style.display = "block"; // Show submit button
-    initPuzzle(); // Restart game
+    currentLevel = 0;
+    restartButton.style.display = "none";
+    submitButton.style.display = "block";
+    initPuzzle();
 }
 
 // Initialize the puzzle when the page loads
