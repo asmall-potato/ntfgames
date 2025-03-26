@@ -56,26 +56,32 @@ h1 {
     }
 
     .original-image img {
-        width: 300px; /* Reduce size for mobile */
+        width: 90%; /* Adjust image width dynamically */
+        max-width: 300px; /* Prevent it from getting too large */
+        height: auto;
     }
 
     .puzzle-container {
-        touch-action: manipulation; /* Disables double-tap zoom */
-        width: 100vw;
-        height: 100vw; /* Square container */
-        max-width: 400px; /* Prevent becoming too large */
-        max-height: 400px;
+        display: grid;
+        grid-template-columns: repeat(4, 75px); /* Smaller grid for mobile */
+        grid-gap: 3px;
+        justify-content: center; /* Center grid */
     }
-    
+
     .puzzle-piece {
-        width: 25% !important; /* 4x4 grid */
-        height: 25% !important;
-        background-size: 400% 400% !important; /* Scale background to grid */
+        width: 75px;
+        height: 75px;
+        background-size: cover; /* Ensure pieces match */
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 300px 300px; /* Match the reduced image size */
     }
-    
-    button {
-        padding: 15px 25px;
-        font-size: 1.2rem;
-        margin: 10px;
+
+    .puzzle-piece.correct {
+        border: 2px solid green;
+    }
+
+    .puzzle-piece.incorrect {
+        border: 2px solid red;
     }
 }
